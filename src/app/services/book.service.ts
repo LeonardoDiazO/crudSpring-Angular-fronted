@@ -8,27 +8,32 @@ import { Book } from '../models/book';
 })
 export class BookService {
   
-  private apiUrl = 'http//localhost:8080/book';
+  private apiUrl = 'http://localhost:8080/book';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
+  // Obtener todos los libros
   getBook(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
   }
 
-  getBookById(id:number): Observable<Book> {
-    return this.http.get<Book>('${this.apiUrl}/${id}');
+  // Obtener un libro por ID
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.apiUrl}/${id}`); 
   }
 
-  createBook(book:Book): Observable<Book> {
+  // Crear un nuevo libro
+  createBook(book: Book): Observable<Book> {
     return this.http.post<Book>(this.apiUrl, book);
   }
 
-  updateBook(book:Book) {
-    return this.http.put(this.apiUrl, book);
+  // Actualizar un libro existente
+  updateBook(book: Book): Observable<Book> {
+    return this.http.put<Book>(`${this.apiUrl}`, book);
   }
 
-  deleteBook(id:number) {
-    return this.http.delete<Book[]>('${this.apiUrl}/${id}');
+  // Eliminar un libro por ID
+  deleteBook(id: number): Observable<void> { 
+    return this.http.delete<void>(`${this.apiUrl}/${id}`); 
   }
 }
