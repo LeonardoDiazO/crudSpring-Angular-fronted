@@ -1,27 +1,36 @@
-<p-toast />
 
-<a routerLink="book-form/new" class="p-button font-bold">
-    Crear nuevo libro
-</a>
+<div class="flex flex-column gap-2">
 
-@for (book of books; track book.id){
-    <p-card header="{{book.title}}" subheader="{{book.autor}}" [style]="{ width: '360px' }">
-        <ng-template pTemplate="header">
-            <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
-        </ng-template>
-        <p>
-            {{book.pages}}
-        </p>
-        <p>
-            {{book.price}}
-        </p>
-        <ng-template pTemplate="footer">
-            <div class="flex gap-3 mt-1">
-                <p-button label="Borrar" (onClick)="deleteBook(book.id)" severity="secondary" class="w-full" styleClass="w-full" />
-                <p-button label="Editar" routerLink="book-form/{{book.id}}" class="w-full" styleClass="w-full" />
-            </div>
-        </ng-template>
-    </p-card>
-}@empty{
-    <p>No existen libros</p>
-}
+    <button 
+        pButton 
+        pRipple 
+        label="Crear nuevo libro"
+        routerLink="book-form/new"
+        class="p-button-success font-bold w-max">
+    </button>
+    
+    <div class="flex gap-4 flex-wrap">
+        @for (book of books; track book.id){
+            <p-card header="{{book.title}}" subheader="{{book.autor}}" [style]="{ width: '360px' }">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+                </ng-template>
+                <p>
+                    Páginas: {{book.pages}}
+                </p>
+                <p>
+                    Precio: ${{book.price}}
+                </p>
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-1 mt-1">
+                        <p-button label="Borrar" (onClick)="deleteBook(book.id)" severity="danger"  styleClass="w-full" [rounded]="true"/>
+                        <p-button label="Editar" routerLink="book-form/{{book.id}}"  styleClass="w-full" [rounded]="true"/>
+                    </div>
+                </ng-template>
+            </p-card>
+        }@empty{
+            <p>No existen libros</p>
+        }
+    </div>
+   
+</div>

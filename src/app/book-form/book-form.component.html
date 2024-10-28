@@ -1,27 +1,29 @@
-<p-toast />
 
-<div class="flex justify-content-center align-items-center min-h-screen w-ful">
-  <p-card header="Formulario libro" class="m-10">
-    <form [formGroup]="formBook" (ngSubmit)="edit?updateBook(): createBook() " class="class flex flex-column gap-2">
+
+<div class="flex justify-content-center align-items-center min-h-screen w-full">
+  <p-card header="Formulario libro" class="m-10 card-custom">
+    <form [formGroup]="formBook" (ngSubmit)="edit?updateBook(): createBook() " class="flex flex-column gap-2">
       <div class="field flex flex-column gap-1">
-        <label for="title">Titulo</label>
+        <label for="title">Titulo:</label>
         <input type="text" pInputText formControlName="title" />
       </div>
       <div class="field flex flex-column gap-1">
-        <label for="autor">Autor</label>
+        <label for="autor">Autor:</label>
         <input type="text" pInputText formControlName="autor" />
       </div>
       <div class="field flex flex-column gap-1">
-        <label for="page">Páginas</label>
+        <label for="page">Páginas:</label>
         <p-inputNumber inputId="integeronly" formControlName="pages" />
       </div>
       <div class="field flex flex-column gap-1">
-        <label for="price">Precio</label>
+        <label for="price">Precio:</label>
         <p-inputNumber inputId="integeronly" formControlName="price" />
       </div>
       <!-- Btn evnet form -->
-      <div class="flex gap-2"></div>
-        <p-button label="Guardar" [loading]="isSaveInProgress" type="submit"/>
+        <div class="flex gap-3">
+          <p-button label="Volver" [text]="true" [rounded]="true" severity="secondary" routerLink="home" />
+          <p-button label="Guardar" [loading]="isSaveInProgress" [rounded]="true" type="submit"/>
+        </div>
     </form>
   </p-card>
 </div>

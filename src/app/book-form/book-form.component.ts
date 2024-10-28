@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { BookService } from '../services/book.service';
-import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,7 +19,6 @@ import { CardModule } from 'primeng/card';
   standalone: true,
   imports: [ReactiveFormsModule, 
             ButtonModule, 
-            ToastModule, 
             RouterModule,
             InputTextModule,
             InputNumberModule,
