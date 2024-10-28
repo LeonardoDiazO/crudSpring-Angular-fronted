@@ -1,9 +1,11 @@
+<p-toast />
+
 <a routerLink="book-form/new" class="p-button font-bold">
     Crear nuevo libro
 </a>
 
 @for (book of books; track book.id){
-    <p-card header="{{book.title}}" subheader="{{book.author}}" [style]="{ width: '360px' }">
+    <p-card header="{{book.title}}" subheader="{{book.autor}}" [style]="{ width: '360px' }">
         <ng-template pTemplate="header">
             <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
         </ng-template>
@@ -15,8 +17,8 @@
         </p>
         <ng-template pTemplate="footer">
             <div class="flex gap-3 mt-1">
-                <p-button label="Borrar" severity="secondary" class="w-full" styleClass="w-full" />
-                <p-button label="Editar" class="w-full" styleClass="w-full" />
+                <p-button label="Borrar" (onClick)="deleteBook(book.id)" severity="secondary" class="w-full" styleClass="w-full" />
+                <p-button label="Editar" routerLink="book-form/{{book.id}}" class="w-full" styleClass="w-full" />
             </div>
         </ng-template>
     </p-card>
