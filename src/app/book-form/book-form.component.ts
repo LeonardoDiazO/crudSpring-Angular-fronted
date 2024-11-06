@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { CardModule } from 'primeng/card';
             RouterModule,
             InputTextModule,
             InputNumberModule,
-            CardModule
+            CardModule,
+            FileUploadModule
           ], //C:\Users\Maximun_neo\frontend-crud\src\app\book-form\book-form.component.html
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.scss',
