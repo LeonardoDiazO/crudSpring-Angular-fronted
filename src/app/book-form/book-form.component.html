@@ -19,15 +19,17 @@
         <label for="price">Precio:</label>
         <p-inputNumber inputId="integeronly" formControlName="price" />
       </div>
-      <p-fileUpload 
-        mode="basic" 
-        chooseLabel="Cargar imagenes" 
-        chooseIcon="pi pi-upload"
-        name="demo[]" 
-        url="https://www.primefaces.org/cdn/api/upload.php" 
-        accept="image/*" 
-        maxFileSize="1000000" 
-         />
+      <div class="field flex flex-column gap-1">
+        <p-fileUpload 
+          mode="basic" 
+          chooseLabel="Cargar imagenes" 
+          chooseIcon="pi pi-upload"
+          name="demo[]" 
+          [customUpload]="true"
+          accept="image/*" 
+          maxFileSize="1000000" 
+          (onSelect)="onFileSelected($event)"/>
+      </div>
       <!-- Btn evnet form -->
         <div class="flex gap-3">
           <p-button label="Volver" [text]="true" [rounded]="true" severity="secondary" routerLink="home" />
