@@ -13,7 +13,11 @@
         @for (book of books; track book.id){
             <p-card header="{{book.title}}" subheader="{{book.autor}}" [style]="{ width: '360px' }">
                 <ng-template pTemplate="header">
-                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+                    <img 
+                    class="w-full img"
+                    height="220px"
+                    alt="Card" 
+                    [src]="book.image? book.image.imgUrl:'/assets/defecto.png'" />
                 </ng-template>
                 <p>
                     Páginas: {{book.pages}}
