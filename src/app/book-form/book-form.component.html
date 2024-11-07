@@ -22,13 +22,13 @@
       <div class="field flex flex-column gap-1">
         <p-fileUpload 
           mode="basic" 
-          chooseLabel="Cargar imagenes" 
+          [chooseLabel]="edit?'Cargar imagenes':'Seleccione imagen'" 
           chooseIcon="pi pi-upload"
           name="demo[]" 
           [customUpload]="true"
           accept="image/*" 
           maxFileSize="1000000" 
-          (onSelect)="onFileSelected($event)"/>
+          (onSelect)="edit ? changeImage($event) : onFileSelected($event)"/>
       </div>
       <!-- Btn evnet form -->
         <div class="flex gap-3">

@@ -48,6 +48,7 @@ export class BookFormComponent {
       autor: ['', Validators.required],
       pages: [1, [Validators.required, Validators.min(1)]],
       price: [0, [Validators.required, Validators.min(0)]],
+      image: [null]
     });
   }
 
@@ -62,7 +63,7 @@ export class BookFormComponent {
     }
   }
 
-  //Meodo para seleccionar los archivos
+  //Metodo para seleccionar los archivos
   onFileSelected(event:FileSelectEvent){
     this.selectedFile = event.files[0];	
   }
@@ -124,7 +125,8 @@ export class BookFormComponent {
     })
   }
   
-  changeImagen(){
+  changeImage(event:FileSelectEvent){
+    this.selectedFile = event.files[0];	
     if(!this.selectedFile){
       this.messageService.add({
         severity: 'error',
