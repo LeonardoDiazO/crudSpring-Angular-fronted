@@ -1,40 +1,141 @@
+<div class="page-container">
+    <!-- Confirm Dialog -->
+    <p-confirmDialog></p-confirmDialog>
 
-<div class="flex flex-column gap-2">
+    <!-- Section Header -->
+    <div class="section-header">
+        <div class="header-left">
+            <h2>Registros de Libros</h2>
+            <p class="text-secondary">Gestiona tu colección de libros</p>
+        </div>
+        <div class="header-right">
+            <button pButton pRipple [icon]="viewMode === 'table' ? 'pi pi-th-large' : 'pi pi-table'"
+                [label]="viewMode === 'table' ? 'Vista Cards' : 'Vista Tabla'" (click)="toggleView()"
+                class="p-button-outlined p-button-secondary mr-2">
+            </button>
+            <button pButton pRipple label="Agregar Nuevo Libro" icon="pi pi-plus" routerLink="book-form/new"
+                class="p-button-success">
+            </button>
+        </div>
+    </div>
 
-    <button 
-        pButton 
-        pRipple 
-        label="Crear nuevo libro"
-        routerLink="book-form/new"
-        class="p-button-success font-bold w-max">
-    </button>
-    
-    <div class="flex gap-4 flex-wrap">
-        @for (book of books; track book.id){
-            <p-card header="{{book.title}}" subheader="{{book.autor}}" [style]="{ width: '360px' }">
-                <ng-template pTemplate="header">
-                    <img 
-                    class="w-full img"
-                    height="220px"
-                    alt="Card" 
-                    [src]="book.image? book.image.imgUrl:'/assets/defecto.png'" />
-                </ng-template>
-                <p>
-                    Páginas: {{book.pages}}
+    <!-- Table View -->
+    @if (viewMode === 'table') {
+    <div class="content-wrapper">
+        <p-table [value]="books" [tableStyle]="{ 'min-width': '50rem' }" [(selection)]="selectedBooks" dataKey="id"
+            [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} libros">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="id" style="width: 5rem">
+                        ID <p-sortIcon field="id"></p-sortIcon>
+                    </th>
+                    <th style="width: 6rem">Imagen</th>
+                    <th pSortableColumn="title">
+                        Título <p-sortIcon field="title"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="autor">
+                        Autor <p-sortIcon field="autor"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="pages" style="width: 8rem">
+                        Páginas <p-sortIcon field="pages"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="price" style="width: 8rem">
+                        Precio <p-sortIcon field="price"></p-sortIcon>
+                    </th>
+                    <th style="width: 12rem">Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-book>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="book"></p-tableCheckbox>
+                    </td>
+                    <td>{{ book.id }}</td>
+                    <td>
+                        <img [src]="book.image?.imgUrl || '/assets/defecto.png'" [alt]="book.title"
+                            class="book-thumbnail">
+                    </td>
+                    <td class="font-semibold">{{ book.title }}</td>
+                    <td>{{ book.autor }}</td>
+                    <td>{{ book.pages }}</td>
+                    <td class="font-semibold">${{ book.price }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button pButton pRipple icon="pi pi-pencil"
+                                class="p-button-rounded p-button-success p-button-sm"
+                                [routerLink]="['book-form', book.id]" pTooltip="Editar" tooltipPosition="top">
+                            </button>
+                            <button pButton pRipple icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-sm"
+                                (click)="confirmDelete(book.id, $event)" pTooltip="Eliminar" tooltipPosition="top">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8" class="text-center">
+                        <div class="empty-state">
+                            <i class="pi pi-book" style="font-size: 3rem; color: var(--text-light);"></i>
+                            <p class="mt-2 text-secondary">No hay libros disponibles</p>
+                            <button pButton pRipple label="Agregar Primer Libro" icon="pi pi-plus"
+                                routerLink="book-form/new" class="p-button-success mt-2">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    }
+
+    <!-- Cards View -->
+    @if (viewMode === 'cards') {
+    <div class="cards-grid">
+        @for (book of books; track book.id) {
+        <p-card [header]="book.title" [subheader]="book.autor" styleClass="book-card">
+            <ng-template pTemplate="header">
+                <img class="card-image" [alt]="book.title" [src]="book.image?.imgUrl || '/assets/defecto.png'" />
+            </ng-template>
+            <div class="card-content">
+                <p class="mb-2">
+                    <i class="pi pi-file"></i>
+                    <span class="ml-2">Páginas: {{ book.pages }}</span>
                 </p>
-                <p>
-                    Precio: ${{book.price}}
+                <p class="price-tag">
+                    <i class="pi pi-dollar"></i>
+                    <span class="ml-2 font-bold">Precio: ${{ book.price }}</span>
                 </p>
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-1 mt-1">
-                        <p-button label="Borrar" (onClick)="deleteBook(book.id)" severity="danger"  styleClass="w-full" [rounded]="true"/>
-                        <p-button label="Editar" routerLink="book-form/{{book.id}}"  styleClass="w-full" [rounded]="true"/>
-                    </div>
-                </ng-template>
-            </p-card>
-        }@empty{
-            <p>No existen libros</p>
+            </div>
+            <ng-template pTemplate="footer">
+                <div class="card-actions">
+                    <button pButton pRipple label="Editar" icon="pi pi-pencil" [routerLink]="['book-form', book.id]"
+                        class="p-button-success p-button-sm flex-1">
+                    </button>
+                    <button pButton pRipple label="Eliminar" icon="pi pi-trash" (click)="confirmDelete(book.id, $event)"
+                        class="p-button-danger p-button-sm flex-1">
+                    </button>
+                </div>
+            </ng-template>
+        </p-card>
+        } @empty {
+        <div class="empty-state-cards">
+            <i class="pi pi-book" style="font-size: 4rem; color: var(--text-light);"></i>
+            <h3 class="mt-3">No hay libros disponibles</h3>
+            <p class="text-secondary mb-3">Comienza agregando tu primer libro a la colección</p>
+            <button pButton pRipple label="Agregar Primer Libro" icon="pi pi-plus" routerLink="book-form/new"
+                class="p-button-success">
+            </button>
+        </div>
         }
     </div>
-   
+    }
 </div>
