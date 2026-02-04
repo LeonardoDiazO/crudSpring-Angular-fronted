@@ -1,4 +1,292 @@
+// Import PrimeNG and PrimeIcons
 @import "primeicons/primeicons.css";
+
+// Import Google Font - Roboto
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+// ========================================
+// CSS Variables - Color Palette
+// ========================================
+:root {
+  // Primary Colors
+  --primary-purple: #5E35B1;
+  --primary-purple-dark: #4A148C;
+  --primary-purple-light: #7E57C2;
+  
+  // Secondary Colors
+  --secondary-teal: #009688;
+  --secondary-teal-dark: #00796B;
+  --secondary-teal-light: #26A69A;
+  
+  // Danger/Error
+  --danger-red: #D32F2F;
+  --danger-red-dark: #C62828;
+  --danger-red-light: #E57373;
+  
+  // Success
+  --success-green: #388E3C;
+  --success-green-dark: #2E7D32;
+  
+  // Backgrounds
+  --background-gray: #F5F5F5;
+  --background-light: #FAFAFA;
+  --card-white: #FFFFFF;
+  
+  // Text Colors
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-light: #BDBDBD;
+  --text-white: #FFFFFF;
+  
+  // Borders and Dividers
+  --border-color: #E0E0E0;
+  --divider-color: #EEEEEE;
+  
+  // Shadows
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-navbar: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+  // Spacing
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  // Border Radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  // Transitions
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.4s ease;
+  
+  // Layout
+  --navbar-height: 64px;
+  --container-max-width: 1400px;
+}
+
+// ========================================
+// Base Styles
+// ========================================
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--background-gray);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ========================================
+// Typography
+// ========================================
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+// ========================================
+// Links
+// ========================================
 a {
-    text-decoration: none;
+  text-decoration: none;
+  color: var(--primary-purple);
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--primary-purple-dark);
+  }
+}
+
+// ========================================
+// Container and Layout
+// ========================================
+.page-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+.content-wrapper {
+  background-color: var(--card-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+// ========================================
+// Utility Classes
+// ========================================
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-light {
+  color: var(--text-light);
+}
+
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+.mt-4 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+.mb-4 { margin-bottom: var(--spacing-xl); }
+
+// ========================================
+// PrimeNG Overrides
+// ========================================
+
+// Button overrides
+.p-button {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  &.p-button-success {
+    background-color: var(--secondary-teal);
+    border-color: var(--secondary-teal);
+    
+    &:hover {
+      background-color: var(--secondary-teal-dark);
+      border-color: var(--secondary-teal-dark);
+    }
+  }
+  
+  &.p-button-danger {
+    background-color: var(--danger-red);
+    border-color: var(--danger-red);
+    
+    &:hover {
+      background-color: var(--danger-red-dark);
+      border-color: var(--danger-red-dark);
+    }
+  }
+}
+
+// Card overrides
+.p-card {
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .p-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .p-card-subtitle {
+    color: var(--text-secondary);
+  }
+}
+
+// Input overrides
+.p-inputtext,
+.p-inputnumber-input {
+  font-family: 'Roboto', sans-serif;
+  border-color: var(--border-color);
+  
+  &:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 0.2rem rgba(94, 53, 177, 0.25);
+  }
+}
+
+// Toast overrides
+.p-toast {
+  .p-toast-message {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// Table overrides
+.p-datatable {
+  .p-datatable-header {
+    background-color: var(--background-light);
+    border-color: var(--border-color);
+  }
+  
+  .p-datatable-thead > tr > th {
+    background-color: var(--background-light);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-color: var(--border-color);
+  }
+  
+  .p-datatable-tbody > tr {
+    transition: background-color var(--transition-fast);
+    
+    &:hover {
+      background-color: var(--background-light);
+    }
+    
+    > td {
+      border-color: var(--border-color);
+    }
+  }
 }

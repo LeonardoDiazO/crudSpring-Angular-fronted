@@ -1,40 +1,100 @@
-
-
-<div class="flex justify-content-center align-items-center min-h-screen w-full">
-  <p-card header="Formulario libro" class="m-10 card-custom">
-    <form [formGroup]="formBook" (ngSubmit)="edit?updateBook(): createBook() " class="flex flex-column gap-2">
-      <div class="field flex flex-column gap-1">
-        <label for="title">Titulo:</label>
-        <input type="text" pInputText formControlName="title" />
-      </div>
-      <div class="field flex flex-column gap-1">
-        <label for="autor">Autor:</label>
-        <input type="text" pInputText formControlName="autor" />
-      </div>
-      <div class="field flex flex-column gap-1">
-        <label for="page">Páginas:</label>
-        <p-inputNumber inputId="integeronly" formControlName="pages" />
-      </div>
-      <div class="field flex flex-column gap-1">
-        <label for="price">Precio:</label>
-        <p-inputNumber inputId="integeronly" formControlName="price" />
-      </div>
-      <div class="field flex flex-column gap-1">
-        <p-fileUpload 
-          mode="basic" 
-          [chooseLabel]="edit?'Cargar imagenes':'Seleccione imagen'" 
-          chooseIcon="pi pi-upload"
-          name="demo[]" 
-          [customUpload]="true"
-          accept="image/*" 
-          maxFileSize="1000000" 
-          (onSelect)="edit ? changeImage($event) : onFileSelected($event)"/>
-      </div>
-      <!-- Btn evnet form -->
-        <div class="flex gap-3">
-          <p-button label="Volver" [text]="true" [rounded]="true" severity="secondary" routerLink="home" />
-          <p-button label="Guardar" [loading]="isSaveInProgress" [rounded]="true" type="submit"/>
+<div class="page-container">
+  <div class="form-container">
+    <p-card styleClass="form-card">
+      <ng-template pTemplate="header">
+        <div class="form-header">
+          <h2>{{ edit ? 'Editar Libro' : 'Agregar Nuevo Libro' }}</h2>
+          <p class="text-secondary">{{ edit ? 'Actualiza la información del libro' : 'Completa los datos del nuevo
+            libro' }}</p>
         </div>
-    </form>
-  </p-card>
+      </ng-template>
+
+      <form [formGroup]="formBook" (ngSubmit)="edit ? updateBook() : createBook()" class="book-form">
+        <!-- Title Field -->
+        <div class="form-field">
+          <label for="title" class="form-label">
+            <i class="pi pi-book mr-1"></i>
+            Título <span class="required">*</span>
+          </label>
+          <input type="text" id="title" pInputText formControlName="title" placeholder="Ingresa el título del libro"
+            [class.p-invalid]="formBook.get('title')?.invalid && formBook.get('title')?.touched" />
+          @if (formBook.get('title')?.invalid && formBook.get('title')?.touched) {
+          <small class="p-error">El título es requerido</small>
+          }
+        </div>
+
+        <!-- Author Field -->
+        <div class="form-field">
+          <label for="autor" class="form-label">
+            <i class="pi pi-user mr-1"></i>
+            Autor <span class="required">*</span>
+          </label>
+          <input type="text" id="autor" pInputText formControlName="autor" placeholder="Ingresa el nombre del autor"
+            [class.p-invalid]="formBook.get('autor')?.invalid && formBook.get('autor')?.touched" />
+          @if (formBook.get('autor')?.invalid && formBook.get('autor')?.touched) {
+          <small class="p-error">El autor es requerido</small>
+          }
+        </div>
+
+        <!-- Pages Field -->
+        <div class="form-field">
+          <label for="pages" class="form-label">
+            <i class="pi pi-file mr-1"></i>
+            Páginas <span class="required">*</span>
+          </label>
+          <p-inputNumber inputId="pages" formControlName="pages" [min]="1" [showButtons]="true"
+            placeholder="Número de páginas" styleClass="w-full"
+            [inputStyleClass]="formBook.get('pages')?.invalid && formBook.get('pages')?.touched ? 'p-invalid' : ''" />
+          @if (formBook.get('pages')?.invalid && formBook.get('pages')?.touched) {
+          <small class="p-error">Las páginas son requeridas (mínimo 1)</small>
+          }
+        </div>
+
+        <!-- Price Field -->
+        <div class="form-field">
+          <label for="price" class="form-label">
+            <i class="pi pi-dollar mr-1"></i>
+            Precio <span class="required">*</span>
+          </label>
+          <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="USD" locale="en-US" [min]="0"
+            [showButtons]="true" placeholder="Precio del libro" styleClass="w-full"
+            [inputStyleClass]="formBook.get('price')?.invalid && formBook.get('price')?.touched ? 'p-invalid' : ''" />
+          @if (formBook.get('price')?.invalid && formBook.get('price')?.touched) {
+          <small class="p-error">El precio es requerido (mínimo 0)</small>
+          }
+        </div>
+
+        <!-- Image Upload Field -->
+        <div class="form-field">
+          <label class="form-label">
+            <i class="pi pi-image mr-1"></i>
+            Imagen {{ edit ? '' : '*' }}
+          </label>
+
+          <!-- Image Preview -->
+          @if (imagePreview) {
+          <div class="image-preview-container">
+            <img [src]="imagePreview" alt="Preview" class="image-preview" />
+            <p class="text-secondary text-center mt-2">Vista previa de la imagen</p>
+          </div>
+          }
+
+          <p-fileUpload mode="basic" [chooseLabel]="imagePreview ? 'Cambiar imagen' : 'Seleccionar imagen'"
+            chooseIcon="pi pi-upload" name="demo[]" [customUpload]="true" accept="image/*" maxFileSize="5000000"
+            [auto]="true" (onSelect)="edit ? changeImage($event) : onFileSelected($event)" styleClass="w-full" />
+          <small class="text-secondary">Formatos aceptados: JPG, PNG, GIF (máx. 5MB)</small>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button pButton pRipple type="button" label="Volver" icon="pi pi-arrow-left"
+            class="p-button-outlined p-button-secondary" routerLink="/home">
+          </button>
+          <button pButton pRipple type="submit" [label]="edit ? 'Actualizar' : 'Guardar'" icon="pi pi-check"
+            [loading]="isSaveInProgress" class="p-button-success">
+          </button>
+        </div>
+      </form>
+    </p-card>
+  </div>
 </div>

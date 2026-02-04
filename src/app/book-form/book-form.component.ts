@@ -13,19 +13,21 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-book-form',
   standalone: true,
-  imports: [ReactiveFormsModule, 
-            ButtonModule, 
-            RouterModule,
-            InputTextModule,
-            InputNumberModule,
-            CardModule,
-            FileUploadModule
-          ], //C:\Users\Maximun_neo\frontend-crud\src\app\book-form\book-form.component.html
+  imports: [ReactiveFormsModule,
+    ButtonModule,
+    RouterModule,
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    FileUploadModule,
+    CommonModule
+  ], //C:\Users\Maximun_neo\frontend-crud\src\app\book-form\book-form.component.html
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.scss',
 })
@@ -34,6 +36,7 @@ export class BookFormComponent {
   isSaveInProgress: boolean = false;
   edit: boolean = false;
   selectedFile: File | null = null;
+  imagePreview: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -57,23 +60,36 @@ export class BookFormComponent {
     //Add 'implements OnInit' to the class.
     let id = this.activatedRoute.snapshot.paramMap.get('id');
 
-    if(id != 'new'){
+    if (id != 'new') {
       this.edit = true;
       this.getBookById(+id!);
     }
   }
 
   //Metodo para seleccionar los archivos
-  onFileSelected(event:FileSelectEvent){
-    this.selectedFile = event.files[0];	
+  onFileSelected(event: FileSelectEvent) {
+    this.selectedFile = event.files[0];
+
+    // Generate preview
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
 
-  getBookById(id: number){
+  getBookById(id: number) {
     this.bookService.getBookById(id).subscribe({
-      next:foundBook => {
+      next: foundBook => {
         this.formBook.patchValue(foundBook);
+        // Set preview for existing image
+        if (foundBook.image?.imgUrl) {
+          this.imagePreview = foundBook.image.imgUrl;
+        }
       },
-      error:()=> {
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -84,26 +100,26 @@ export class BookFormComponent {
     })
   }
 
-  createBook(){
-    if(this.formBook.invalid){
+  createBook() {
+    if (this.formBook.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Revise los campos e intente nuevamente',
       });
-      return 
+      return
     }
-    if(!this.selectedFile){
+    if (!this.selectedFile) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Seleccione una imagen e intente nuevamnente',
       });
-      return 
+      return
     }
     this.isSaveInProgress = true;
     this.bookService.createBook(this.formBook.value, this.selectedFile).subscribe({
-      next:()=>{
+      next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Guardado',
@@ -112,7 +128,7 @@ export class BookFormComponent {
         this.isSaveInProgress = false;
         this.router.navigateByUrl('/')
       },
-      error:()=>{
+      error: () => {
         this.isSaveInProgress = false;
         this.messageService.add({
           severity: 'error',
@@ -124,19 +140,29 @@ export class BookFormComponent {
 
     })
   }
-  
-  changeImage(event:FileSelectEvent){
-    this.selectedFile = event.files[0];	
-    if(!this.selectedFile){
+
+  changeImage(event: FileSelectEvent) {
+    this.selectedFile = event.files[0];
+
+    // Generate preview
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+
+    if (!this.selectedFile) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Seleccione una imagen e intente nuevamnente',
       });
-      return 
+      return
     }
     this.bookService.updateBookImage(this.formBook.value.id, this.selectedFile).subscribe({
-      next:()=>{
+      next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Guardado',
@@ -145,7 +171,7 @@ export class BookFormComponent {
         this.isSaveInProgress = false;
         this.router.navigateByUrl('/');
       },
-      error:()=>{
+      error: () => {
         this.isSaveInProgress = false;
         this.messageService.add({
           severity: 'error',
@@ -155,19 +181,19 @@ export class BookFormComponent {
       }
     })
   }
-  
-  updateBook(){
-    if(this.formBook.invalid){
+
+  updateBook() {
+    if (this.formBook.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
         detail: 'Revise los campos e intente nuevamente',
       });
-      return 
+      return
     }
     this.isSaveInProgress = true;
     this.bookService.updateBook(this.formBook.value).subscribe({
-      next:()=>{
+      next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Actualizado',
@@ -176,7 +202,7 @@ export class BookFormComponent {
         this.isSaveInProgress = false;
         this.router.navigateByUrl('/')
       },
-      error:()=>{
+      error: () => {
         this.isSaveInProgress = false;
         this.messageService.add({
           severity: 'error',

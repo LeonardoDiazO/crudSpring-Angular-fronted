@@ -1,0 +1,159 @@
+<div class="page-container">
+    <div class="form-container">
+        <p-card styleClass="form-card">
+            <ng-template pTemplate="header">
+                <div class="form-header">
+                    <h2>{{ edit ? 'Editar Empleado' : 'Agregar Nuevo Empleado' }}</h2>
+                    <p class="text-secondary">{{ edit ? 'Actualiza la información del empleado' : 'Completa los datos
+                        del nuevo empleado' }}</p>
+                </div>
+            </ng-template>
+
+            <form [formGroup]="formEmployee" (ngSubmit)="edit ? updateEmployee() : createEmployee()"
+                class="employee-form">
+                <!-- First Name Field -->
+                <div class="form-field">
+                    <label for="firstName" class="form-label">
+                        <i class="pi pi-user mr-1"></i>
+                        Nombre <span class="required">*</span>
+                    </label>
+                    <input type="text" id="firstName" pInputText formControlName="firstName"
+                        placeholder="Ingresa el nombre"
+                        [class.p-invalid]="formEmployee.get('firstName')?.invalid && formEmployee.get('firstName')?.touched" />
+                    @if (formEmployee.get('firstName')?.invalid && formEmployee.get('firstName')?.touched) {
+                    <small class="p-error">El nombre es requerido</small>
+                    }
+                </div>
+
+                <!-- Last Name Field -->
+                <div class="form-field">
+                    <label for="lastName" class="form-label">
+                        <i class="pi pi-user mr-1"></i>
+                        Apellido <span class="required">*</span>
+                    </label>
+                    <input type="text" id="lastName" pInputText formControlName="lastName"
+                        placeholder="Ingresa el apellido"
+                        [class.p-invalid]="formEmployee.get('lastName')?.invalid && formEmployee.get('lastName')?.touched" />
+                    @if (formEmployee.get('lastName')?.invalid && formEmployee.get('lastName')?.touched) {
+                    <small class="p-error">El apellido es requerido</small>
+                    }
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-field">
+                    <label for="email" class="form-label">
+                        <i class="pi pi-envelope mr-1"></i>
+                        Email <span class="required">*</span>
+                    </label>
+                    <input type="email" id="email" pInputText formControlName="email" placeholder="ejemplo@correo.com"
+                        [class.p-invalid]="formEmployee.get('email')?.invalid && formEmployee.get('email')?.touched" />
+                    @if (formEmployee.get('email')?.invalid && formEmployee.get('email')?.touched) {
+                    <small class="p-error">Ingrese un email válido</small>
+                    }
+                </div>
+
+                <!-- Position Field -->
+                <div class="form-field">
+                    <label for="position" class="form-label">
+                        <i class="pi pi-briefcase mr-1"></i>
+                        Cargo <span class="required">*</span>
+                    </label>
+                    <input type="text" id="position" pInputText formControlName="position"
+                        placeholder="Ej: Desarrollador Senior"
+                        [class.p-invalid]="formEmployee.get('position')?.invalid && formEmployee.get('position')?.touched" />
+                    @if (formEmployee.get('position')?.invalid && formEmployee.get('position')?.touched) {
+                    <small class="p-error">El cargo es requerido</small>
+                    }
+                </div>
+
+                <!-- Department Field -->
+                <div class="form-field">
+                    <label for="department" class="form-label">
+                        <i class="pi pi-building mr-1"></i>
+                        Departamento <span class="required">*</span>
+                    </label>
+                    <input type="text" id="department" pInputText formControlName="department"
+                        placeholder="Ej: Tecnología"
+                        [class.p-invalid]="formEmployee.get('department')?.invalid && formEmployee.get('department')?.touched" />
+                    @if (formEmployee.get('department')?.invalid && formEmployee.get('department')?.touched) {
+                    <small class="p-error">El departamento es requerido</small>
+                    }
+                </div>
+
+                <!-- Salary Field -->
+                <div class="form-field">
+                    <label for="salary" class="form-label">
+                        <i class="pi pi-dollar mr-1"></i>
+                        Salario <span class="required">*</span>
+                    </label>
+                    <p-inputNumber inputId="salary" formControlName="salary" mode="currency" currency="USD"
+                        locale="en-US" [min]="0" [showButtons]="true" placeholder="Salario del empleado"
+                        styleClass="w-full"
+                        [inputStyleClass]="formEmployee.get('salary')?.invalid && formEmployee.get('salary')?.touched ? 'p-invalid' : ''" />
+                    @if (formEmployee.get('salary')?.invalid && formEmployee.get('salary')?.touched) {
+                    <small class="p-error">El salario es requerido (mínimo 0)</small>
+                    }
+                </div>
+
+                <!-- Hire Date Field -->
+                <div class="form-field">
+                    <label for="hireDate" class="form-label">
+                        <i class="pi pi-calendar mr-1"></i>
+                        Fecha de Contratación <span class="required">*</span>
+                    </label>
+                    <p-calendar inputId="hireDate" formControlName="hireDate" dateFormat="yy-mm-dd"
+                        placeholder="Selecciona la fecha" styleClass="w-full" [showIcon]="true"
+                        [inputStyleClass]="formEmployee.get('hireDate')?.invalid && formEmployee.get('hireDate')?.touched ? 'p-invalid' : ''" />
+                    @if (formEmployee.get('hireDate')?.invalid && formEmployee.get('hireDate')?.touched) {
+                    <small class="p-error">La fecha de contratación es requerida</small>
+                    }
+                </div>
+
+                <!-- Phone Field -->
+                <div class="form-field">
+                    <label for="phone" class="form-label">
+                        <i class="pi pi-phone mr-1"></i>
+                        Teléfono <span class="required">*</span>
+                    </label>
+                    <input type="tel" id="phone" pInputText formControlName="phone" placeholder="Ej: +1234567890"
+                        [class.p-invalid]="formEmployee.get('phone')?.invalid && formEmployee.get('phone')?.touched" />
+                    @if (formEmployee.get('phone')?.invalid && formEmployee.get('phone')?.touched) {
+                    <small class="p-error">El teléfono es requerido</small>
+                    }
+                </div>
+
+                <!-- Image Upload Field -->
+                <div class="form-field">
+                    <label class="form-label">
+                        <i class="pi pi-image mr-1"></i>
+                        Foto {{ edit ? '' : '*' }}
+                    </label>
+
+                    <!-- Image Preview -->
+                    @if (imagePreview) {
+                    <div class="image-preview-container">
+                        <img [src]="imagePreview" alt="Preview" class="image-preview" />
+                        <p class="text-secondary text-center mt-2">Vista previa de la foto</p>
+                    </div>
+                    }
+
+                    <p-fileUpload mode="basic" [chooseLabel]="imagePreview ? 'Cambiar foto' : 'Seleccionar foto'"
+                        chooseIcon="pi pi-upload" name="demo[]" [customUpload]="true" accept="image/*"
+                        maxFileSize="5000000" [auto]="true"
+                        (onSelect)="edit ? changeImage($event) : onFileSelected($event)" styleClass="w-full" />
+                    <small class="text-secondary">Formatos aceptados: JPG, PNG, GIF (máx. 5MB)</small>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button pButton pRipple type="button" label="Volver" icon="pi pi-arrow-left"
+                        class="p-button-outlined p-button-secondary" routerLink="/home">
+                    </button>
+                    <button pButton pRipple type="submit" [label]="edit ? 'Actualizar' : 'Guardar'" icon="pi pi-check"
+                        [loading]="isSaveInProgress" class="p-button-success">
+                    </button>
+                </div>
+            </form>
+        </p-card>
+    </div>
+</div>
